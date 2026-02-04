@@ -38,15 +38,6 @@
           }
         ]
       },
-      "minecraft:healable": {
-        "force_use": false,
-        "items": [
-          {
-            "item": "iron_ingot",
-            "amount": 5
-          }
-        ]
-      },
 
       // Movements
       "minecraft:movement": {
