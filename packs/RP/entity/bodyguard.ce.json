@@ -22,9 +22,9 @@
         "move_controller": "controller.animation.bodyguard.move",
         "arm_controller": "controller.animation.bodyguard.arm_movement"
       },
-      "render_controllers": ["controller.render.bodyguard.rc"],
+      "render_controllers": ["controller.render.bodyguard"],
       "scripts": {
-        "initialize": ["variable.attack_animation_tick = 0;"],
+        "initialize": ["variable.attack_animation_tick=0;"],
         "pre_animation": [
           "variable.modified_tcos0 = Math.clamp(((Math.cos(query.modified_distance_moved * 13.5) * Math.min(query.modified_move_speed, 0.6) / variable.gliding_speed_value) * 25.0), -12.5, 12.5);"
         ],
