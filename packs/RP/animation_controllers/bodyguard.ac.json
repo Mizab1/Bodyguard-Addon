@@ -4,17 +4,6 @@
     "controller.animation.bodyguard.arm_movement": {
       "initial_state": "default",
       "states": {
-        "default": {
-          "animations": ["move"],
-          "transitions": [
-            {
-              "attack": "variable.attack_animation_tick > 0.0"
-            },
-            {
-              "has_target": "query.has_target"
-            }
-          ]
-        },
         "attack": {
           "animations": ["attack"],
           "transitions": [
@@ -23,6 +12,17 @@
             },
             {
               "has_target": "query.has_target && variable.attack_animation_tick <= 0.0"
+            }
+          ]
+        },
+        "default": {
+          "animations": ["move"],
+          "transitions": [
+            {
+              "attack": "variable.attack_animation_tick > 0.0"
+            },
+            {
+              "has_target": "query.has_target"
             }
           ]
         },
