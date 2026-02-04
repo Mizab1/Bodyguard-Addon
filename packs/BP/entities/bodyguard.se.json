@@ -38,6 +38,15 @@
           }
         ]
       },
+      "minecraft:healable": {
+        "force_use": false,
+        "items": [
+          {
+            "item": "iron_ingot",
+            "amount": 5
+          }
+        ]
+      },
 
       // Movements
       "minecraft:movement": {
@@ -296,6 +305,7 @@
         "priority": 3,
         "must_reach": true,
         "must_see": true,
+        "reselect_targets": true,
 
         "entity_types": [
           {
@@ -327,6 +337,26 @@
       "minecraft:behavior.hurt_by_target": {
         "priority": 2
       },
+      "minecraft:behavior.teleport_to_owner": {
+        "priority": 1,
+        "filters": {
+          "test": "owner_distance",
+          "operator": ">",
+          "value": 40
+        }
+      },
+      "minecraft:behavior.owner_hurt_by_target": {
+        "priority": 1
+      },
+      "minecraft:behavior.owner_hurt_target": {
+        "priority": 2
+      },
+      "minecraft:behavior.follow_owner": {
+        "priority": 6,
+        "speed_multiplier": 1,
+        "start_distance": 14,
+        "stop_distance": 5
+      },
 
       // Misc
       "minecraft:persistent": {},
@@ -343,7 +373,8 @@
       "minecraft:leashable_to": {},
       "minecraft:balloonable": {
         "mass": 2.0
-      }
+      },
+      "minecraft:tameable": {}
     },
 
     "events": {}
