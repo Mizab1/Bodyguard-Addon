@@ -2,3 +2,5 @@ pack.name=Bodyguard
 pack.description=Adds a body guard entity into the game
 entity.bdguard:bodyguard.name=Bodyguard
 item.spawn_egg.entity.bdguard:bodyguard.name=Bodyguard
+
+item.coin.name=Stack of Coins
