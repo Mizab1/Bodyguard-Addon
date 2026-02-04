@@ -344,8 +344,8 @@
       },
       "minecraft:behavior.follow_owner": {
         "priority": 6,
-        "speed_multiplier": 1,
-        "start_distance": 14,
+        "speed_multiplier": 1.1,
+        "start_distance": 10,
         "stop_distance": 5
       },
 
