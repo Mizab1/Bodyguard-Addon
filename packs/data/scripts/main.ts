@@ -1,5 +1,5 @@
-import { world, EntityTameableComponent, MolangVariableMap } from "@minecraft/server";
-// import { randomRange } from "./utils/functions.js";
+import { Entity, EntityTameableComponent, MolangVariableMap, Player, world } from "@minecraft/server";
+import { randomFloat } from "./utils/functions";
 
 const CONSTANTS = {
   COIN_ITEM: "bdguard:coin",
@@ -16,7 +16,7 @@ world.afterEvents.playerInteractWithEntity.subscribe((event) => {
   if (itemStack?.typeId !== CONSTANTS.COIN_ITEM) return;
 
   // Count the coins given
-  const currentCoins = (target.getDynamicProperty(CONSTANTS.PROPERTY_COIN_COUNT) ?? 0) + 1;
+  const currentCoins = ((target.getDynamicProperty(CONSTANTS.PROPERTY_COIN_COUNT) as number) ?? 0) + 1;
   target.setDynamicProperty(CONSTANTS.PROPERTY_COIN_COUNT, currentCoins);
 
   // Display the particle and play sounds
@@ -46,7 +46,7 @@ world.afterEvents.entitySpawn.subscribe(({ entity }) => {
 });
 
 // Helper Functions
-function playInteractionEffects(entity) {
+function playInteractionEffects(entity: Entity) {
   const headLoc = entity.getHeadLocation();
   const { dimension } = entity;
 
@@ -54,28 +54,33 @@ function playInteractionEffects(entity) {
   dimension.playSound("random.orb", headLoc, { pitch: 0.5, volume: 1.0 });
 
   // Spawn Particles
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < 10; i++) {
     const offset = {
-      x: headLoc.x + (Math.random() - 0.5),
-      y: headLoc.y + (Math.random() - 0.5),
-      z: headLoc.z + (Math.random() - 0.5),
+      x: headLoc.x + randomFloat(-1, 1),
+      y: headLoc.y + randomFloat(-1, 1),
+      z: headLoc.z + randomFloat(-1, 1),
     };
+
     dimension.spawnParticle("minecraft:villager_happy", offset);
   }
 }
 
-function transformToBodyguard(originalMob, owner) {
+function transformToBodyguard(originalMob: Entity, owner: Player) {
   const { dimension, location } = originalMob;
+  const headLoc = originalMob.getHeadLocation();
 
   // Play Sound
   dimension.playSound("random.level_up", location, { pitch: 1.0, volume: 1.0 });
 
-  const molang = new MolangVariableMap();
-  molang.setSpeedAndDirection("variable.heart_emitter", 0.3, { x: 0.5, y: 0.5, z: 0.5 });
-
   // Display particles
   for (let i = 0; i < 10; i++) {
-    dimension.spawnParticle("minecraft:heart_particle", originalMob.getHeadLocation(), molang);
+    const offset = {
+      x: headLoc.x + randomFloat(-1, 1),
+      y: headLoc.y + randomFloat(-1, 1),
+      z: headLoc.z + randomFloat(-1, 1),
+    };
+
+    dimension.spawnParticle("minecraft:heart_particle", offset);
   }
 
   // Replace the mob

@@ -1,24 +1,40 @@
 {
-	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.6.json",
-	"author": "Mizab",
-	"name": "Bodyguard",
-	"packs": {
-		"behaviorPack": "./packs/BP",
-		"resourcePack": "./packs/RP"
-	},
-	"regolith": {
-		"dataPath": "./packs/data",
-		"filterDefinitions": {},
-		"formatVersion": "1.6.0",
-		"profiles": {
-			"default": {
-				"export": {
-					"build": "standard",
-					"readOnly": false,
-					"target": "development"
-				},
-				"filters": []
-			}
-		}
-	}
+  "$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.6.json",
+  "author": "Mizab",
+  "name": "Bodyguard",
+  "packs": {
+    "behaviorPack": "./packs/BP",
+    "resourcePack": "./packs/RP"
+  },
+  "regolith": {
+    "dataPath": "./packs/data",
+    "filterDefinitions": {
+      "esbuild": {
+        "url": "github.com/ink0rr/regolith-filters",
+        "version": "0.3.1"
+      }
+    },
+    "formatVersion": "1.6.0",
+    "profiles": {
+      "default": {
+        "export": {
+          "build": "standard",
+          "readOnly": false,
+          "target": "development"
+        },
+        "filters": [
+          {
+            "filter": "esbuild",
+            "settings": {
+              "bundle": true,
+              "entryPoints": ["./data/scripts/main.ts"],
+              "external": ["@minecraft/server"],
+              "format": "esm",
+              "outfile": "./BP/scripts/main.js"
+            }
+          }
+        ]
+      }
+    }
+  }
 }
