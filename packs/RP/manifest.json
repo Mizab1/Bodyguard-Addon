@@ -1,8 +1,8 @@
 {
   "format_version": 2,
   "header": {
-    "description": "pack.description",
-    "name": "pack.name",
+    "description": "Adds a bodyguard entity into the game",
+    "name": "Bodyguard",
     "uuid": "9d367321-9aa4-4c01-a8d6-3f6712df53db",
     "min_engine_version": [1, 21, 114],
     "version": [1, 0, 0]
