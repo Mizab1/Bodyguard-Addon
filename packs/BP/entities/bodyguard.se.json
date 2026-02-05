@@ -333,7 +333,7 @@
         "filters": {
           "test": "owner_distance",
           "operator": ">",
-          "value": 40
+          "value": 80
         }
       },
       "minecraft:behavior.owner_hurt_by_target": {
@@ -345,7 +345,7 @@
       "minecraft:behavior.follow_owner": {
         "priority": 6,
         "speed_multiplier": 1.05,
-        "start_distance": 12,
+        "start_distance": 9,
         "stop_distance": 5
       },
 

@@ -10,10 +10,10 @@ const CONSTANTS = {
 };
 
 world.afterEvents.playerInteractWithEntity.subscribe((event) => {
-  const { player, target, itemStack } = event;
+  const { player, target, beforeItemStack } = event;
 
   if (target.typeId !== CONSTANTS.TARGET_MOB) return;
-  if (itemStack?.typeId !== CONSTANTS.COIN_ITEM) return;
+  if (beforeItemStack?.typeId !== CONSTANTS.COIN_ITEM) return;
 
   // Count the coins given
   const currentCoins = ((target.getDynamicProperty(CONSTANTS.PROPERTY_COIN_COUNT) as number) ?? 0) + 1;
