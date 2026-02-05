@@ -10,15 +10,15 @@
         "default": "textures/entity/bodyguard"
       },
       "geometry": {
-        "default": "geometry.irongolem"
+        "default": "geometry.bodyguard"
       },
       "animations": {
-        "walk": "animation.iron_golem.walk",
-        "move": "animation.iron_golem.move",
-        "attack": "animation.iron_golem.attack",
+        "walk": "animation.bodyguard.walk",
+        "move": "animation.bodyguard.move",
+        "attack": "animation.bodyguard.attack",
         "look_at_target": "animation.common.look_at_target",
-        "walk_to_target": "animation.iron_golem.walk_to_target",
-        "move_to_target": "animation.iron_golem.move_to_target",
+        "walk_to_target": "animation.bodyguard.walk_to_target",
+        "move_to_target": "animation.bodyguard.move_to_target",
         "move_controller": "controller.animation.bodyguard.move",
         "arm_controller": "controller.animation.bodyguard.arm_movement"
       },

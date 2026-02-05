@@ -6,20 +6,22 @@
       "states": {
         "attack": {
           "animations": ["attack"],
+          "blend_transition": 0.2,
           "transitions": [
             {
-              "default": "!query.has_target && variable.attack_animation_tick <= 0.0"
+              "default": "!query.has_target && variable.attack_time <= 0.0"
             },
             {
-              "has_target": "query.has_target && variable.attack_animation_tick <= 0.0"
+              "has_target": "query.has_target && variable.attack_time <= 0.0"
             }
           ]
         },
         "default": {
           "animations": ["move"],
+          "blend_transition": 0.2,
           "transitions": [
             {
-              "attack": "variable.attack_animation_tick > 0.0"
+              "attack": "variable.attack_time > 0.0"
             },
             {
               "has_target": "query.has_target"
@@ -30,7 +32,7 @@
           "animations": ["move_to_target"],
           "transitions": [
             {
-              "attack": "variable.attack_animation_tick > 0.0"
+              "attack": "variable.attack_time > 0.0"
             },
             {
               "default": "!query.has_target"
