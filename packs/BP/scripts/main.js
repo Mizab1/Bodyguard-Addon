@@ -1,57 +1,91 @@
-import { world, EntityTameableComponent } from "@minecraft/server";
+import { world, EntityTameableComponent, MolangVariableMap } from "@minecraft/server";
+// import { randomRange } from "./utils/functions.js";
 
-const COINS_TO_BE_GIVEN = 5;
+const CONSTANTS = {
+  COIN_ITEM: "bdguard:coin",
+  TARGET_MOB: "minecraft:iron_golem",
+  RESULT_MOB: "bdguard:bodyguard",
+  COINS_REQUIRED: 5,
+  PROPERTY_COIN_COUNT: "coinsGiven",
+};
 
 world.afterEvents.playerInteractWithEntity.subscribe((event) => {
-  // Variables
   const { player, target, itemStack } = event;
-  const headLocation = target.getHeadLocation();
-  const randomPos = {
-    x: headLocation.x + (Math.random() - 0.5) * 1.2,
-    y: headLocation.y + Math.random() * 0.5 + 0.2,
-    z: headLocation.z + (Math.random() - 0.5) * 1.2,
-  };
 
-  // Check if the target is an iron golem
-  if (target.typeId === "minecraft:iron_golem" && itemStack?.typeId === "bdguard:coin") {
-    // Count the coins
-    const prevCoin = target.getDynamicProperty("coinsGiven") || 0;
-    target.setDynamicProperty("coinsGiven", prevCoin + 1);
+  if (target.typeId !== CONSTANTS.TARGET_MOB) return;
+  if (itemStack?.typeId !== CONSTANTS.COIN_ITEM) return;
 
-    // Display particles and play sound
-    particlesAndSounds(target, randomPos, headLocation);
+  // Count the coins given
+  const currentCoins = (target.getDynamicProperty(CONSTANTS.PROPERTY_COIN_COUNT) ?? 0) + 1;
+  target.setDynamicProperty(CONSTANTS.PROPERTY_COIN_COUNT, currentCoins);
 
-    // Once 5 coins are reached
-    if (prevCoin + 1 >= COINS_TO_BE_GIVEN) {
-      transformMob(target, player, randomPos);
-    }
+  // Display the particle and play sounds
+  playInteractionEffects(target);
+
+  if (currentCoins >= CONSTANTS.COINS_REQUIRED) {
+    transformToBodyguard(target, player);
   }
 });
 
-function particlesAndSounds(target, randomPos, headLocation) {
-  for (let i = 0; i < 8; i++) {
-    target.dimension.spawnParticle("minecraft:villager_happy", randomPos);
+world.afterEvents.entitySpawn.subscribe(({ entity }) => {
+  if (entity.typeId !== CONSTANTS.RESULT_MOB) return;
+
+  const tameable = entity.getComponent(EntityTameableComponent.componentId);
+  if (!tameable || tameable.isTamed) return;
+
+  // Get the closest player
+  const closestPlayer = entity.dimension.getPlayers({
+    location: entity.location,
+    maxDistance: 5,
+    closest: 1,
+  })[0];
+
+  if (closestPlayer) {
+    tameable.tame(closestPlayer);
   }
-  target.dimension.playSound("random.orb", headLocation, {
-    pitch: 0.5,
-    volume: 1.0,
-  });
+});
+
+// Helper Functions
+function playInteractionEffects(entity) {
+  const headLoc = entity.getHeadLocation();
+  const { dimension } = entity;
+
+  // Play Sound
+  dimension.playSound("random.orb", headLoc, { pitch: 0.5, volume: 1.0 });
+
+  // Spawn Particles
+  for (let i = 0; i < 8; i++) {
+    const offset = {
+      x: headLoc.x + (Math.random() - 0.5),
+      y: headLoc.y + (Math.random() - 0.5),
+      z: headLoc.z + (Math.random() - 0.5),
+    };
+    dimension.spawnParticle("minecraft:villager_happy", offset);
+  }
 }
 
-function transformMob(target, player, randomPos) {
-  // transformMob(target, owner, randomPos);
-  const bodyguard = target.dimension.spawnEntity("bdguard:bodyguard", target.location);
-  bodyguard.getComponent(EntityTameableComponent.componentId)?.tame(player);
+function transformToBodyguard(originalMob, owner) {
+  const { dimension, location } = originalMob;
 
-  // Play sounds and particles
-  target.dimension.playSound("random.level_up", target.location, {
-    pitch: 1.0,
-    volume: 1.0,
-  });
-  for (let i = 0; i < 8; i++) {
-    target.dimension.spawnParticle("minecraft:heart", randomPos);
+  // Play Sound
+  dimension.playSound("random.level_up", location, { pitch: 1.0, volume: 1.0 });
+
+  const molang = new MolangVariableMap();
+  molang.setSpeedAndDirection("variable.heart_emitter", 0.3, { x: 0.5, y: 0.5, z: 0.5 });
+
+  // Display particles
+  for (let i = 0; i < 10; i++) {
+    dimension.spawnParticle("minecraft:heart_particle", originalMob.getHeadLocation(), molang);
   }
 
-  // Remove the entity
-  target.remove();
+  // Replace the mob
+  const bodyguard = dimension.spawnEntity(CONSTANTS.RESULT_MOB, location);
+
+  const tameable = bodyguard.getComponent(EntityTameableComponent.componentId);
+  if (tameable) {
+    tameable.tame(owner);
+  }
+
+  // Remove the old mob
+  originalMob.remove();
 }
