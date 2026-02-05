@@ -1,0 +1,23 @@
+{
+  "format_version": "1.21.30",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "bdguard:coin"
+    },
+    "tags": ["crafting_table"],
+    "pattern": ["I", "I"],
+    "key": {
+      "I": {
+        "item": "minecraft:gold_ingot"
+      }
+    },
+    "unlock": [
+      {
+        "item": "minecraft:gold_ingot"
+      }
+    ],
+    "result": {
+      "item": "bdguard:coin"
+    }
+  }
+}
