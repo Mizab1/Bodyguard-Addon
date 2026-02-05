@@ -9,6 +9,10 @@
   "regolith": {
     "dataPath": "./packs/data",
     "filterDefinitions": {
+      "bump_manifest": {
+        "url": "github.com/Bedrock-OSS/regolith-filters",
+        "version": "1.1.1"
+      },
       "esbuild": {
         "url": "github.com/ink0rr/regolith-filters",
         "version": "0.3.1"
@@ -31,6 +35,32 @@
               "external": ["@minecraft/server"],
               "format": "esm",
               "outfile": "./BP/scripts/main.js"
+            }
+          }
+        ]
+      },
+      "release": {
+        "export": {
+          "target": "local",
+          "readOnly": false
+        },
+        "filters": [
+          {
+            "filter": "bump_manifest",
+            "settings": {
+              "bump": "patch",
+              "output": "source"
+            }
+          },
+          {
+            "filter": "esbuild",
+            "settings": {
+              "bundle": true,
+              "entryPoints": ["./data/scripts/main.ts"],
+              "external": ["@minecraft/server"],
+              "format": "esm",
+              "outfile": "./BP/scripts/main.js",
+              "minify": true
             }
           }
         ]
