@@ -20,7 +20,7 @@
         "height": 2.9
       },
       "minecraft:loot": {
-        "table": "loot_tables/entities/iron_golem.json"
+        "table": "loot_tables/entities/bodyguard.json"
       },
       "minecraft:health": {
         "value": 100,
