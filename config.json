@@ -16,6 +16,10 @@
       "esbuild": {
         "url": "github.com/ink0rr/regolith-filters",
         "version": "0.3.1"
+      },
+      "pack_anything": {
+        "url": "github.com/Nusiq/regolith-filters",
+        "version": "1.1.1"
       }
     },
     "formatVersion": "1.6.0",
@@ -41,8 +45,8 @@
       },
       "release": {
         "export": {
-          "target": "local",
-          "readOnly": false
+          "readOnly": false,
+          "target": "local"
         },
         "filters": [
           {
@@ -59,8 +63,18 @@
               "entryPoints": ["./data/scripts/main.ts"],
               "external": ["@minecraft/server"],
               "format": "esm",
-              "outfile": "./BP/scripts/main.js",
-              "minify": true
+              "minify": true,
+              "outfile": "./BP/scripts/main.js"
+            }
+          },
+          {
+            "filter": "pack_anything",
+            "settings": {
+              "output": "./build/Bodyguard.mcaddon",
+              "pathmap": {
+                "BP": "./BP",
+                "RP": "./RP"
+              }
             }
           }
         ]
