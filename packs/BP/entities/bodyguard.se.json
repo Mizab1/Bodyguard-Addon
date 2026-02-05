@@ -75,7 +75,7 @@
       "minecraft:attack": {
         "damage": {
           "range_min": 7,
-          "range_max": 21
+          "range_max": 14
         }
       },
       "minecraft:damage_sensor": {
@@ -344,8 +344,8 @@
       },
       "minecraft:behavior.follow_owner": {
         "priority": 6,
-        "speed_multiplier": 1.1,
-        "start_distance": 10,
+        "speed_multiplier": 1.05,
+        "start_distance": 12,
         "stop_distance": 5
       },
 
