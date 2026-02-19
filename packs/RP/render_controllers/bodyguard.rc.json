@@ -4,7 +4,7 @@
     "controller.render.bodyguard": {
       "geometry": "Geometry.default",
       "materials": [{ "*": "Material.default" }],
-      "textures": ["Texture.default"]
+      "textures": ["query.variant == 1 ? Texture.standby : Texture.default"]
     }
   }
 }

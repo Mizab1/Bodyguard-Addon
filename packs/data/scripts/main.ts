@@ -9,6 +9,7 @@ const CONSTANTS = {
   PROPERTY_COIN_COUNT: "coinsGiven",
 };
 
+// Run when the player interacts with the iron golem
 world.afterEvents.playerInteractWithEntity.subscribe((event) => {
   const { player, target, beforeItemStack } = event;
 
@@ -27,6 +28,7 @@ world.afterEvents.playerInteractWithEntity.subscribe((event) => {
   }
 });
 
+// Run when the bodyguard is spawned with commands
 world.afterEvents.entitySpawn.subscribe(({ entity }) => {
   if (entity.typeId !== CONSTANTS.RESULT_MOB) return;
 
@@ -43,6 +45,27 @@ world.afterEvents.entitySpawn.subscribe(({ entity }) => {
   if (closestPlayer) {
     tameable.tame(closestPlayer);
   }
+});
+
+// Run when the bodyguard is clicked
+world.afterEvents.playerInteractWithEntity.subscribe((event) => {
+  const { player, target, itemStack } = event;
+
+  // Check if the entity is bodyguard and is tamed
+  if (!(target?.typeId === "bdguard:bodyguard") || itemStack?.typeId === "minecraft:iron_ingot") return;
+
+  let isStandby = target.getDynamicProperty("isStandby") ?? false;
+
+  if (isStandby) {
+    target.triggerEvent("bdguard:set_following");
+    player.onScreenDisplay.setActionBar("§aFollowing");
+  } else {
+    target.triggerEvent("bdguard:set_standby");
+    player.onScreenDisplay.setActionBar("§6Standby Mode");
+  }
+
+  target.setDynamicProperty("isStandby", !isStandby);
+  player.dimension.playSound("random.click", target.location);
 });
 
 // Helper Functions

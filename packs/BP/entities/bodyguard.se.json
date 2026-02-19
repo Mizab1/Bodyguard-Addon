@@ -7,7 +7,33 @@
       "is_summonable": true
     },
 
-    "component_groups": {},
+    "component_groups": {
+      "bdguard:standby": {
+        "minecraft:variant": { "value": 1 }
+      },
+      "bdguard:following": {
+        "minecraft:variant": { "value": 0 },
+        "minecraft:behavior.follow_owner": {
+          "priority": 6,
+          "speed_multiplier": 1.05,
+          "start_distance": 9,
+          "stop_distance": 5
+        },
+        "minecraft:behavior.teleport_to_owner": {
+          "priority": 1,
+          "filters": { "test": "owner_distance", "operator": ">", "value": 80 }
+        },
+        "minecraft:behavior.owner_hurt_by_target": {
+          "priority": 1
+        },
+        "minecraft:behavior.owner_hurt_target": {
+          "priority": 2
+        },
+        "minecraft:behavior.hurt_by_target": {
+          "priority": 2
+        }
+      }
+    },
 
     "components": {
       // Generic
@@ -44,8 +70,8 @@
         "value": 0.25
       },
       "minecraft:navigation.walk": {
-        "can_path_over_water": false,
-        "avoid_water": true,
+        "can_path_over_water": true,
+        "avoid_water": false,
         "avoid_damage_blocks": true
       },
       "minecraft:movement.basic": {},
@@ -65,8 +91,16 @@
             },
             "use_item": true,
             "health_amount": 25,
-            "play_sounds": "irongolem.repair",
-            "interact_text": "action.interact.repair"
+            "play_sounds": "chime.amethyst_block"
+          },
+          {
+            "on_interact": {
+              "filters": {
+                "all_of": [{ "test": "is_family", "subject": "other", "value": "player" }]
+              },
+              "target": "self"
+            },
+            "use_item": false
           }
         ]
       },
@@ -325,29 +359,29 @@
           }
         ]
       },
-      "minecraft:behavior.hurt_by_target": {
-        "priority": 2
-      },
-      "minecraft:behavior.teleport_to_owner": {
-        "priority": 1,
-        "filters": {
-          "test": "owner_distance",
-          "operator": ">",
-          "value": 80
-        }
-      },
-      "minecraft:behavior.owner_hurt_by_target": {
-        "priority": 1
-      },
-      "minecraft:behavior.owner_hurt_target": {
-        "priority": 2
-      },
-      "minecraft:behavior.follow_owner": {
-        "priority": 6,
-        "speed_multiplier": 1.05,
-        "start_distance": 9,
-        "stop_distance": 5
-      },
+      // "minecraft:behavior.hurt_by_target": {
+      //   "priority": 2
+      // },
+      // "minecraft:behavior.teleport_to_owner": {
+      //   "priority": 1,
+      //   "filters": {
+      //     "test": "owner_distance",
+      //     "operator": ">",
+      //     "value": 80
+      //   }
+      // },
+      // "minecraft:behavior.owner_hurt_by_target": {
+      //   "priority": 1
+      // },
+      // "minecraft:behavior.owner_hurt_target": {
+      //   "priority": 2
+      // },
+      // "minecraft:behavior.follow_owner": {
+      //   "priority": 6,
+      //   "speed_multiplier": 1.05,
+      //   "start_distance": 9,
+      //   "stop_distance": 5
+      // },
 
       // Misc
       "minecraft:persistent": {},
@@ -368,6 +402,20 @@
       "minecraft:tameable": {}
     },
 
-    "events": {}
+    "events": {
+      "minecraft:entity_spawned": {
+        "add": {
+          "component_groups": ["bdguard:following"]
+        }
+      },
+      "bdguard:set_standby": {
+        "remove": { "component_groups": ["bdguard:following"] },
+        "add": { "component_groups": ["bdguard:standby"] }
+      },
+      "bdguard:set_following": {
+        "remove": { "component_groups": ["bdguard:standby"] },
+        "add": { "component_groups": ["bdguard:following"] }
+      }
+    }
   }
 }
